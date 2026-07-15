@@ -15,23 +15,18 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-WATSONX_API_KEY = st.secrets.get(
-    "WATSONX_API_KEY",
-    os.getenv("WATSONX_API_KEY", "")
-).strip()
-
-WATSONX_PROJECT_ID = st.secrets.get(
-    "WATSONX_PROJECT_ID",
-    os.getenv("WATSONX_PROJECT_ID", "")
-).strip()
-
-WATSONX_REGION = st.secrets.get(
-    "WATSONX_REGION",
-    os.getenv("WATSONX_REGION", "eu-gb")
-).strip()
+# Works in both local (.env) and Streamlit Cloud (Secrets)
+try:
+    WATSONX_API_KEY = st.secrets["WATSONX_API_KEY"].strip()
+    WATSONX_PROJECT_ID = st.secrets["WATSONX_PROJECT_ID"].strip()
+    WATSONX_REGION = st.secrets.get("WATSONX_REGION", "eu-gb").strip()
+except Exception:
+    WATSONX_API_KEY = os.getenv("WATSONX_API_KEY", "").strip()
+    WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "").strip()
+    WATSONX_REGION = os.getenv("WATSONX_REGION", "eu-gb").strip()
 
 IAM_TOKEN_URL = "https://iam.cloud.ibm.com/identity/token"
-WATSONX_URL   = f"https://{WATSONX_REGION}.ml.cloud.ibm.com"
+WATSONX_URL = f"https://{WATSONX_REGION}.ml.cloud.ibm.com"
 
 MODEL_ID = "mistralai/mistral-small-3-1-24b-instruct-2503"
 
