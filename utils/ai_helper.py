@@ -10,13 +10,25 @@ Auth:  IAM API key → short-lived Bearer token (cached for ~1 hour)
 import os
 import time
 import requests
+import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
 
-WATSONX_API_KEY    = os.getenv("WATSONX_API_KEY", "").strip()
-WATSONX_PROJECT_ID = os.getenv("WATSONX_PROJECT_ID", "").strip()
-WATSONX_REGION     = os.getenv("WATSONX_REGION", "eu-gb").strip()
+WATSONX_API_KEY = st.secrets.get(
+    "WATSONX_API_KEY",
+    os.getenv("WATSONX_API_KEY", "")
+).strip()
+
+WATSONX_PROJECT_ID = st.secrets.get(
+    "WATSONX_PROJECT_ID",
+    os.getenv("WATSONX_PROJECT_ID", "")
+).strip()
+
+WATSONX_REGION = st.secrets.get(
+    "WATSONX_REGION",
+    os.getenv("WATSONX_REGION", "eu-gb")
+).strip()
 
 IAM_TOKEN_URL = "https://iam.cloud.ibm.com/identity/token"
 WATSONX_URL   = f"https://{WATSONX_REGION}.ml.cloud.ibm.com"
