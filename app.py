@@ -201,20 +201,14 @@ with st.sidebar:
     st.markdown("## API Status")
     st.caption("Set your credentials in `.env`")
 
-    api_key = st.secrets.get(
-    "WATSONX_API_KEY",
-    os.getenv("WATSONX_API_KEY", "")
-    ).strip()
-
-    project_id = st.secrets.get(
-    "WATSONX_PROJECT_ID",
-    os.getenv("WATSONX_PROJECT_ID", "")
-    ).strip()
-
-    region = st.secrets.get(
-    "WATSONX_REGION",
-    os.getenv("WATSONX_REGION", "eu-gb")
-    ).strip()
+    try:
+        api_key = st.secrets["WATSONX_API_KEY"].strip()
+        project_id = st.secrets["WATSONX_PROJECT_ID"].strip()
+        region = st.secrets.get("WATSONX_REGION", "eu-gb").strip()
+    except Exception:
+        api_key = os.getenv("WATSONX_API_KEY", "").strip()
+        project_id = os.getenv("WATSONX_PROJECT_ID", "").strip()
+        region = os.getenv("WATSONX_REGION", "eu-gb").strip()
 
     if api_key and project_id:
         st.success("IBM watsonx configured")
